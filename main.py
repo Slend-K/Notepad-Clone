@@ -11,7 +11,7 @@ def savefile():
             txt_to_write = text_box.get("1.0", "end-1c")
             file.write(txt_to_write)
             file.close()
-            successwindow = Tk.Tk();                successwindow.geometry("1000x40");                successwindow.title("Notepad: File saved successfully");                successwindow.resizable(True, False);                successtext = Tk.Label(successwindow, text=f"File saved successfully!\nPath: {file.name}");                successtext.pack();                successwindow.mainloop() # FUN FACT: Python does use semicolons! They're used to represent a line break :)
+            successwindow = Tk.Tk();                successwindow.geometry("1000x40");                successwindow.title("Notepad: File saved successfully");                successwindow.resizable(True, False);                successtext = Tk.Label(successwindow, text=f"File saved successfully to:\n{file.name}");                successtext.pack();                successwindow.mainloop() # FUN FACT: Python does use semicolons! They're used to represent a line break :)
         except Exception as e:
             print(f"Error whilst saving file:\n{str(e)}")                                                                                                                                                                                                                                                                                                                                                 # They can be used like this to avoid wasting lines. Wow.
             failwindow = Tk.Tk();                failwindow.geometry("500x40");                failwindow.title("Notepad: Error saving file");                failwindow.resizable(True, True);                failwindow.maxsize(500,500);                failtext = Tk.Label(failwindow, text=f"An error occurred whilst trying to save the file!\nError: {str(e)}");                failtext.pack();                failwindow.mainloop() # FUN FACT: Python does use semicolons! They're used to represent a line break :)
@@ -27,13 +27,10 @@ def openfile():
 
 
 window = Tk.Tk()
-window.geometry("500x300")
-window.minsize(250,50)
+window.geometry("660x300")
+window.minsize(660,25) # If the scrollbar disappears when the window is too small, don't let the window be too small!
 window.title("Notepad")
-scrollbar = Tk.Scrollbar(window) # This needs fixing; it doesn't work. Not massively important though because the scroll wheel/two fingers on touchpad still works fine.
-scrollbar.pack(side=Tk.RIGHT, fill=Tk.Y)
-
-text_box = Tk.Text(window)
+text_box = Tk.Text(window, wrap="word")
 
 
 save_button = Tk.Button(window, text="Save", command=lambda:savefile())
@@ -41,7 +38,11 @@ save_button.pack(side=Tk.TOP) # Whilst not important, work on getting all these 
 open_button = Tk.Button(window, text="Open", command=lambda:openfile())
 open_button.pack(side=Tk.TOP)
 
-text_box.pack(fill=Tk.BOTH, expand=True) # At the bottom so everything is placed above it.
+text_box.pack(side=Tk.LEFT,fill=Tk.BOTH, expand=True) # At the bottom so everything is placed above it.
+
+scrollbar = Tk.Scrollbar(window, command=text_box.yview)
+scrollbar.pack(side=Tk.RIGHT, fill=Tk.Y)
+text_box.config(yscrollcommand=scrollbar.set)
 
 # Everything above this, of course.
 window.mainloop()
